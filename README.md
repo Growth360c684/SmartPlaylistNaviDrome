@@ -25,94 +25,58 @@ Playlists update automatically — no manual intervention needed. Changing any s
 
 ---
 
-## Build Tutorial
+## Installation
 
-The plugin is written in Go and compiled to WebAssembly using TinyGo. Everything runs inside Docker — no local Go installation required.
+### Option A — Prebuilt (recommended)
 
-### Step 1 — Clone the repository
+No build tools required.
+
+1. **Download** `smart_playlist.ndp` from the [latest release](../../releases/latest)
+2. **Drop it** into your Navidrome `plugins/` folder
+3. **Add your music** — edit `docker-compose.yml` to point at your library:
+   ```yaml
+   volumes:
+     - /path/to/your/music:/music   # ← change this line
+     - ./data:/data
+     - ./plugins:/plugins
+   ```
+   Or generate a test library (requires [FFmpeg](https://ffmpeg.org/)):
+   ```bash
+   bash generate_library.sh
+   ```
+4. **Start Navidrome:**
+   ```bash
+   docker compose up navidrome
+   ```
+5. **Enable the plugin** — open [http://localhost:4533](http://localhost:4533) → gear icon → Settings → Plugins → toggle **Smart Playlist** on
+
+Playlists appear within seconds. Default login is `admin` / `admin` — change `ND_ADMINPASSWORD` in `docker-compose.yml` before exposing the server to a network.
+
+---
+
+### Option B — Build from source
+
+Use this if you want to modify the plugin. The plugin is written in Go and compiled to WebAssembly using TinyGo — no local Go installation required, everything runs in Docker.
 
 ```bash
 git clone https://github.com/your-username/navidrome-smart-playlist.git
 cd navidrome-smart-playlist
-```
-
-### Step 2 — Build the plugin
-
-```bash
 docker compose up plugin-builder
 ```
 
-This will:
-1. Pull the TinyGo Docker image (first run only, ~500 MB)
-2. Compile `plugin/` to `plugin.wasm`
-3. Package `manifest.json` + `plugin.wasm` into `plugins/smart_playlist.ndp`
+This pulls the TinyGo image (first run only, ~500 MB), compiles the plugin, and outputs `plugins/smart_playlist.ndp`. Then follow steps 3–5 from Option A above.
 
-You should see `Plugin built successfully` at the end. The output file `plugins/smart_playlist.ndp` is what Navidrome loads.
-
-**Rebuilding after code changes:**
-
+To rebuild after making changes:
 ```bash
 docker compose up plugin-builder
+docker compose restart navidrome
 ```
-
-The builder always does a clean compile — just re-run the same command.
 
 ---
 
-## Installation Tutorial
+### Configure (optional)
 
-### Step 1 — Add your music
-
-Point Navidrome at your music folder by editing `docker-compose.yml`:
-
-```yaml
-volumes:
-  - /path/to/your/music:/music   # ← change this line
-  - ./data:/data
-  - ./plugins:/plugins
-```
-
-Or use the included test library generator (requires [FFmpeg](https://ffmpeg.org/)):
-
-```bash
-bash generate_library.sh
-```
-
-This creates 3 artists × 2 albums × 5 tracks in `music/` for testing.
-
-### Step 2 — Start the server
-
-```bash
-docker compose up navidrome
-```
-
-Navidrome will start on port **4533**. The `data/` folder is created automatically on first run to store the database and cache.
-
-### Step 3 — Log in
-
-Open [http://localhost:4533](http://localhost:4533) in your browser.
-
-Default credentials:
-
-| Field | Value |
-|-------|-------|
-| Username | `admin` |
-| Password | `admin` |
-
-> **Security note:** Change `ND_ADMINPASSWORD` in `docker-compose.yml` before exposing this server to a network.
-
-### Step 4 — Enable the Smart Playlist plugin
-
-1. Click the **gear icon** (top-right) → **Settings**
-2. Go to the **Plugins** tab
-3. Find **Smart Playlist** in the list
-4. Click the toggle to **enable** it
-
-The plugin will run immediately. Within a few seconds you'll see playlists appear in your library.
-
-### Step 5 — Configure (optional)
-
-Click the **Smart Playlist** plugin name to open its settings panel:
+Click the **Smart Playlist** plugin name in Settings → Plugins to open its settings panel:
 
 | Setting | What it does |
 |---------|-------------|
@@ -127,7 +91,7 @@ Click the **Smart Playlist** plugin name to open its settings panel:
 
 Any change triggers an immediate regeneration of all playlists.
 
-### Step 6 — Run in the background (optional)
+### Run in the background (optional)
 
 ```bash
 docker compose up -d navidrome
