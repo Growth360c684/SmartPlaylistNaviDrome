@@ -1,6 +1,6 @@
-# Navidrome Smart Playlist
+# Navidrome Smart Playlist Plugin
 
-A self-hosted music server setup powered by [Navidrome](https://www.navidrome.org/) with a custom WebAssembly plugin that automatically generates Spotify-style smart playlists from your library.
+A WebAssembly plugin for [Navidrome](https://www.navidrome.org/) that automatically generates Spotify-style smart playlists from your music library — Daily Mixes, On Repeat, Release Radar, Artist Radio, and more. No manual curation needed.
 
 ## What It Generates
 
