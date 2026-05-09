@@ -1,0 +1,35 @@
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    ports:
+      - "4533:4533"
+    environment:
+      ND_MUSICFOLDER: /music
+      ND_DATAFOLDER: /data
+      ND_PLUGINS_ENABLED: "true"
+      ND_PLUGINS_FOLDER: /plugins
+      ND_LOGLEVEL: debug
+      ND_ADMINUSERNAME: admin
+      ND_ADMINPASSWORD: admin
+    volumes:
+      - ./music:/music
+      - ./data:/data
+      - ./plugins:/plugins
+    restart: unless-stopped
+
+  plugin-builder:
+    image: tinygo/tinygo:0.31.2
+    user: root
+    volumes:
+      - ./plugin:/src
+      - ./plugins:/dist
+    working_dir: /src
+    command: >
+      sh -c "
+      apt-get update && apt-get install -y zip &&
+      go mod init navidrome-smart-radio || true &&
+      go get github.com/extism/go-pdk &&
+      tinygo build -o plugin.wasm -target wasi ./cmd/plugin/ &&
+      zip -j /dist/smart_playlist.ndp manifest.json plugin.wasm &&
+      echo 'Plugin built successfully'
+      "

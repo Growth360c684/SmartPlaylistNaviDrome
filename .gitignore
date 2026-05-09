@@ -1,0 +1,12 @@
+# Runtime data
+data/
+plugins/
+
+# Build artifacts
+plugin/plugin.wasm
+
+# Dev environment
+music/
+
+# OS
+.DS_Store
